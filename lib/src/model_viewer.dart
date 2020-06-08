@@ -85,19 +85,27 @@ class _ModelViewerState extends State<ModelViewer> {
       javascriptMode: JavascriptMode.unrestricted,
       initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
       onWebViewCreated: (final WebViewController webViewController) async {
-        print('>>>>>>>>>>>>>>>>> ModelViewer initializing...'); // DEBUG
+        print('>>>>>>>>>>>>>>>>> ModelViewer initializing start...'); // DEBUG
         _controller.complete(webViewController);
+        print('>>>>>>>>>>>>>>>>> ModelViewer initializing controller complete...'); // DEBUG
         final AssetBundle bundle = DefaultAssetBundle.of(context);
         final ThemeData themeData = Theme.of(context);
+        print('>>>>>>>>>>>>>>>>> ModelViewer initializing about to load model viewer bundle template html...'); // DEBUG
         final String htmlTemplate = await bundle
             .loadString('packages/model_viewer/etc/assets/template.html');
+        print('>>>>>>>>>>>>>>>>> ModelViewer initializing template html loaded...'); // DEBUG
         final String html = _buildHTML(themeData, htmlTemplate);
+        print('>>>>>>>>>>>>>>>>> ModelViewer initializing html string ready...'); // DEBUG
         final String contentBase64 =
             base64Encode(const Utf8Encoder().convert(html));
+        print('>>>>>>>>>>>>>>>>> ModelViewer initializing html base64 encoded...'); // DEBUG
         await webViewController.loadUrl('data:text/html;base64,$contentBase64');
+        print('>>>>>>>>>>>>>>>>> ModelViewer initializing bhtml base64 loaded into webview...'); // DEBUG
         final js = await bundle
             .loadString('packages/model_viewer/etc/assets/model-viewer.js');
+        print('>>>>>>>>>>>>>>>>> ModelViewer initializing js loaded...'); // DEBUG
         await webViewController.evaluateJavascript(js);
+        print('>>>>>>>>>>>>>>>>> ModelViewer initializing js evaluated...'); // DEBUG
       },
       onPageStarted: (final String url) {
         //print('>>>>>>>>>>>>>>>>> ModelViewer began loading: $url'); // DEBUG
